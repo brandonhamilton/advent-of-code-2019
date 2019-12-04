@@ -1,0 +1,51 @@
+name:                advent-of-code
+version:             0.1.0.0
+github:              "brandonhamilton/advent-of-code-2019"
+license:             MIT
+author:              "Brandon Hamilton"
+maintainer:          "brandon.hamilton@gmail.com"
+copyright:           "2019 Brandon Hamilton"
+
+extra-source-files:
+- README.md
+
+description:         Please see the README on GitHub at <https://github.com/brandonhamilton/advent-of-code-2019#readme>
+
+default-extensions:
+- DeriveFoldable
+- DeriveFunctor
+- DeriveGeneric
+- DeriveLift
+- DeriveTraversable
+- EmptyCase
+- FlexibleContexts
+- FlexibleInstances
+- GeneralizedNewtypeDeriving
+- InstanceSigs
+- LambdaCase
+- MultiParamTypeClasses
+- NamedFieldPuns
+- NoImplicitPrelude
+- OverloadedStrings
+- ScopedTypeVariables
+- StandaloneDeriving
+
+dependencies:
+- base >= 4.7 && < 5
+- microlens
+- relude
+- text
+
+library:
+  source-dirs: src
+
+tests:
+  advent-of-code-test:
+    main:                Spec.hs
+    source-dirs:         test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - advent-of-code
