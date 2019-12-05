@@ -8,3 +8,4 @@ main = do
   putTextLn "\nDay 1" >> day1
   putTextLn "\nDay 2" >> day2
   putTextLn "\nDay 3" >> day3
+  putTextLn "\nDay 4" >> day4
