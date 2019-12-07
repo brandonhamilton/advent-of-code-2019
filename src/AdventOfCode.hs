@@ -4,10 +4,12 @@ module AdventOfCode
   , module Day3
   , module Day4
   , module Day5
-  ) where
+  , module Day6
+  )where
 
 import Day1
 import Day2
 import Day3
 import Day4
 import Day5
+import Day6
