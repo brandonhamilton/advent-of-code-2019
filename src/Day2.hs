@@ -6,25 +6,19 @@ module Day2 where
 import Relude
 import Control.Lens (ix, (.~), (^?!))
 import qualified Data.Text as T
+import qualified Data.List as L
 
 day2 :: IO ()
 day2 = do
   input <- T.splitOn "," <$> readFileText "./input/day2.txt" -- Read input lines
   let code = fromRight 0 . readEither <$> input -- Convert to Integers
-      Just result = runWith 12 2 code -- Interpret program (Part 1)
+      Just result = runWith code 12 2  -- Interpret program (Part 1)
   print result -- Show result
-  let (noun, verb) = runUntil 0 0 19690720 code -- Brute force search for values (Part 2)
+  let Just [noun, verb] = L.find (\[n, v] -> runWith code n v == Just 19690720) (sequence [[0..99],[0..99]])
   print (100 * noun + verb) -- Show result
   where
-    runUntil :: Int -> Int -> Int -> [Int] -> (Int, Int)
-    runUntil noun verb result code | runWith noun verb code == Just result = (noun, verb)
-    runUntil noun verb result code | verb < 99  = runUntil noun      (verb + 1) result code
-    runUntil noun verb result code | verb == 99 = runUntil (noun + 1) 0         result code
-    runUntil noun verb result code | noun < 99  = runUntil (noun + 1) verb      result code
-    runUntil noun verb _ _ = error $ "(" <> show noun <> "," <> show verb <> ")"
-
-    runWith :: Int -> Int -> [Int] -> Maybe Int
-    runWith noun verb code = let c = replace 1 noun (replace 2 verb code) in viaNonEmpty head (run c c)
+    runWith :: [Int] -> Int -> Int -> Maybe Int
+    runWith code noun verb = let c = replace 1 noun (replace 2 verb code) in viaNonEmpty head (run c c)
 
     replace :: Int -> Int -> [Int] -> [Int]
     replace pos val l = l & ix pos .~ val

@@ -32,10 +32,11 @@ default-extensions:
 
 dependencies:
 - base >= 4.7 && < 5
-- containers
 - lens
+- parallel
 - relude
 - text
+- unordered-containers
 
 library:
   source-dirs: src

@@ -4,25 +4,21 @@
 module Day6 where
 
 import Relude
-import qualified Data.Map.Strict as Map
 import qualified Data.Text as T
 import qualified Data.List as L
+import qualified Data.HashMap.Lazy as H
 
 day6 :: IO ()
 day6 = do
   input <- lines <$> readFileText "./input/day6.txt" -- Read input lines
-  let orbits = foldl' orbit Map.empty (T.splitOn ")" <$> input) -- Extract all orbits
-  print (length (foldl' (path orbits) [] (Map.keys orbits))) -- Count orbit paths
-  let Just numTransfers = transfers (path orbits [] "YOU") (path orbits [] "SAN") -- Count transfers
+  let orbits = (\[i, o] -> (o, i)) . T.splitOn ")" <$> input -- Extract all orbits
+      orbitMap = H.fromList orbits -- Create a mapping of orbits
+      len m l (k, v) | Just i <- H.lookup v m = l + 1 + len m 0 (v, i) | otherwise = l + 1 -- Recursively calculate length
+      path m p k | Just i <- H.lookup k m = p <> [i] <> (path m [] i) | otherwise = p -- Recursively calculate path
+  print $ foldl' (len orbitMap) 0 orbits -- Count orbit paths
+  let Just numTransfers = transfers (path orbitMap [] "YOU") (path orbitMap [] "SAN") -- Count transfers
   print numTransfers
   where
-    orbit :: Map Text [Text] -> [Text] -> Map Text [Text]
-    orbit m [i, o] = Map.insertWith (++) o [i] m
-
-    path :: Map Text [Text] -> [Text] -> Text -> [Text]
-    path m p k | Just i <- Map.lookup k m = p <> i <> concat (path m [] <$> i)
-               | otherwise = p
-
     transfers :: [Text] -> [Text] -> Maybe Int
     transfers p1 p2 = do
       common <- viaNonEmpty head (p1 `L.intersect` p2)
