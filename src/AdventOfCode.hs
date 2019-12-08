@@ -6,6 +6,7 @@ module AdventOfCode
   , module Day5
   , module Day6
   , module Day7
+  , module Day8
   )where
 
 import Day1
@@ -15,3 +16,4 @@ import Day4
 import Day5
 import Day6
 import Day7
+import Day8
