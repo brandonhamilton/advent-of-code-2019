@@ -13,3 +13,4 @@ main = do
   putTextLn "\nDay 6" >> day6
   putTextLn "\nDay 7" >> day7
   putTextLn "\nDay 8" >> day8
+  putTextLn "\nDay 9" >> day9
