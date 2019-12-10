@@ -22,7 +22,7 @@ day10 = do
       asteroids = filter isAsteroid (sequence [[0..height-1],[0..width-1]])
 
       path :: [Int] -> [Int] -> [Int] -> [[Int]] -- Generate path between two locations
-      path [dy, dx] start e@[ey, ex] = takeWhile (e /=) $ iterate (\[y, x] -> [y+dy, x+dx]) start
+      path [dy, dx] start end = takeWhile (end /=) $ iterate (\[y, x] -> [y+dy, x+dx]) start
 
       los :: [Int] -> [Int] -> [[Int]] -- Calculate the line of sight between two locations
       los p@[py, px] e@[ey, ex] = let (dy, dx) = (ey - py, ex - px)
@@ -37,7 +37,7 @@ day10 = do
       -- Find the location and visibility count of asteroid with maximum line of sight to all others
       (station, visibility) = L.maximumBy (compare `on` snd) ((\p -> (p, sum . fmap snd . filter ((p ==) . fst) $ pairs)) <$> asteroids)
 
-      angle :: [Int] -> [Int] -> Float -- Find the angle between two points
+      angle :: [Int] -> [Int] -> Float -- Find the angle between two locations
       angle [sy, sx] [ay, ax] = atan2 (fromIntegral (ax-sx)) (fromIntegral (ay-sy))
 
       laser :: [[Int]] -- Generate the asteroid ordering
