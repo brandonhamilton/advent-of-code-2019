@@ -1,7 +1,7 @@
 --
 -- | Day 11
 --
-module Day11 where
+module Day11 (day11) where
 
 import Relude
 import Data.List (maximum, minimum)
