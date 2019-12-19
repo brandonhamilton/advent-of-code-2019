@@ -13,13 +13,13 @@ load codePath = do
   pure code
 
 -- | Create a computer and initialize it with an IntCode program
-boot :: [Integer] -> IO (Chan Integer, Chan Integer, IO ())
+boot :: (Num a, Integral a) => [Integer] -> IO (Chan a, Chan a, IO ())
 boot code = do
   [input, output] <- forM [0..1] $ const newChan
   pure (input, output, computer input output 0 0 (code <> repeat 0))
 
 --  | An IntCode computer
-computer :: Chan Integer -> Chan Integer -> Int -> Integer -> [Integer] -> IO ()
+computer :: (Num a, Integral a) => Chan a -> Chan a -> Int -> Integer -> [Integer] -> IO ()
 computer input output ip base code = do
   let Just instr = code !!? ip
       digits n | n < 10 = [n] | (q, r) <- n `quotRem` 10 = r : digits q
